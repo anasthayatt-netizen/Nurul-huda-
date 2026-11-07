@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Madrasa Mark List Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#0a0a0b;--card:#151517;--in:#0c0c0e;--line:#2b2b30;--red:#8f0f1b;--red2:#c1121f;--tx:#f3f3f3;--mut:#a0a0a8;--acc:#ff5a64;--ok:#5ee08a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){color-scheme:light;--bg:#f6f3f3;--card:#fff;--in:#faf7f7;--line:#ddd3d3;--tx:#1b1214;--mut:#6b5f62;--acc:#b00f1c;--ok:#12803a}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 Poppins,"Noto Sans Malayalam",system-ui,sans-serif;min-height:100vh}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 18px;border-bottom:2px solid var(--red2);background:var(--card)}
+header h1{font-size:17px;margin:0;flex:1;min-width:160px}header h1 small{display:block;color:var(--mut);font-weight:400;font-size:12px}
+.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--red2),#4a0509);display:grid;place-items:center;font-size:22px}
+main{max-width:1000px;margin:0 auto;padding:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
+.login{max-width:400px;margin:5vh auto 0;text-align:center}.login .logo{margin:0 auto 12px;width:64px;height:64px;font-size:32px}
+input,select{width:100%;background:var(--in);border:1px solid var(--line);color:var(--tx);border-radius:10px;padding:10px 12px;font:inherit;margin:6px 0}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--red2);outline-offset:2px}
+.pw{position:relative}.pw input{padding-right:70px}
+.eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--acc);cursor:pointer;font:600 12px Poppins,sans-serif;padding:8px}
+.b{background:linear-gradient(135deg,var(--red2),var(--red));color:#fff;border:0;border-radius:10px;padding:10px 16px;font:600 14px Poppins,sans-serif;cursor:pointer}
+.b.g{background:var(--line);color:var(--tx)}.b.w{width:100%;margin-top:8px;padding:12px}.b.s{padding:6px 10px;font-size:12px}
+.err{color:#ff6b6b;min-height:22px;font-size:14px}
+.wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--mut);font-size:12px;font-weight:600}tfoot td{font-weight:700;border-top:2px solid var(--red2);border-bottom:0}
+td input{width:76px;margin:0;padding:7px}td input.k{width:170px}
+.hero{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}.hero h2{margin:0;font-size:22px}.hero p{margin:2px 0 0;color:var(--mut)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:16px}
+.st{background:var(--in);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}.st b{display:block;font-size:22px;color:var(--acc)}.st span{font-size:12px;color:var(--mut)}
+.ok{color:var(--ok);font-weight:700}.no{color:#ff6b6b;font-weight:700}.low{color:#ff6b6b}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.tab{background:var(--card);color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer;font:inherit;font-size:14px}.tab.on{background:var(--red);color:#fff;border-color:var(--red2)}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}.mut{color:var(--mut);font-size:13px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--red);color:#fff;padding:10px 18px;border-radius:12px;opacity:0;transition:.3s;pointer-events:none;max-width:90vw;text-align:center;z-index:99}
+#intro{position:fixed;inset:0;z-index:50;background:radial-gradient(600px 400px at 50% 45%,#3d0810 0,#050506 70%);color:#f3f3f3;display:grid;place-items:center;text-align:center;transition:opacity .9s;cursor:pointer;padding:20px}
+#intro.hide{opacity:0;pointer-events:none}
+.pic{width:min(300px,64vw);margin:0 auto 22px;border-radius:26px;overflow:hidden;border:3px solid var(--red2);box-shadow:0 0 60px #c1121f99;animation:pop 1s cubic-bezier(.2,1.4,.4,1) both,glow 2.4s 1s ease-in-out infinite}
+.pic svg{display:block;width:100%}
+.en{font:700 clamp(24px,7vw,46px)/1.2 Poppins,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.en span{display:inline-block;opacity:0;transform:translateY(24px) scale(.6);animation:up .6s forwards}
+.ml{font:700 clamp(22px,6vw,36px) "Noto Sans Malayalam",sans-serif;margin-top:10px;color:#ff5a64;opacity:0;animation:fade 1.2s 1.9s forwards}
+.ln{height:3px;width:0;margin:18px auto 0;background:linear-gradient(90deg,transparent,var(--red2),transparent);animation:ln 1.4s 1.6s forwards}
+.sub{margin-top:14px;color:#a0a0a8;letter-spacing:.3em;font-size:12px;opacity:0;animation:fade 1s 2.6s forwards}
+@keyframes pop{from{transform:scale(0) rotate(-12deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes glow{50%{box-shadow:0 0 90px #ff1c2db3}}
+@keyframes up{to{opacity:1;transform:none}}@keyframes fade{to{opacity:1}}@keyframes ln{to{width:min(320px,70vw)}}
+@media(prefers-reduced-motion:reduce){#intro *{animation-duration:.01s!important;animation-delay:0s!important}}
+@media print{header .b,.noprint{display:none}body{background:#fff;color:#000}.card{border-color:#999}}
+</style>
+</head>
+<body>
+<div id="app"></div><div id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),app=$('#app');
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function cy(s){let a=0xdeadbeef,b=0x41c6ce57;for(let i=0,c;i<s.length;i++){c=s.charCodeAt(i);a=Math.imul(a^c,2654435761);b=Math.imul(b^c,1597334677)}a=Math.imul(a^(a>>>16),2246822507)^Math.imul(b^(b>>>13),3266489909);b=Math.imul(b^(b>>>16),2246822507)^Math.imul(a^(a>>>13),3266489909);return'x'+(4294967296*(2097151&b)+(a>>>0)).toString(16)}
+function sha(msg){
+ const b=new TextEncoder().encode(msg),l=b.length,n=((l+9+63)>>6)<<4,w=new Uint32Array(n);
+ for(let i=0;i<l;i++)w[i>>2]|=b[i]<<(24-(i&3)*8);
+ w[l>>2]|=0x80<<(24-(l&3)*8);w[n-1]=l*8;
+ const K=[],h=[];
+ for(let p=2,c=0;c<64;p++){let q=1;for(let d=2;d*d<=p;d++)if(p%d==0){q=0;break}if(q){if(c<8)h[c]=(Math.sqrt(p)%1)*4294967296|0;K[c++]=(Math.cbrt(p)%1)*4294967296|0}}
+ const r=(x,k)=>x>>>k|x<<(32-k),W=new Uint32Array(64);
+ for(let o=0;o<n;o+=16){
+  for(let i=0;i<16;i++)W[i]=w[o+i];
+  for(let i=16;i<64;i++){const a=W[i-15],c=W[i-2];W[i]=W[i-16]+(r(a,7)^r(a,18)^a>>>3)+W[i-7]+(r(c,17)^r(c,19)^c>>>10)}
+  let[a,b2,c,d,e,f,g,hh]=h;
+  for(let i=0;i<64;i++){const t1=hh+(r(e,6)^r(e,11)^r(e,25))+((e&f)^(~e&g))+K[i]+W[i],t2=(r(a,2)^r(a,13)^r(a,22))+((a&b2)^(a&c)^(b2&c));hh=g;g=f;f=e;e=d+t1|0;d=c;c=b2;b2=a;a=t1+t2|0}
+  [a,b2,c,d,e,f,g,hh].forEach((v,i)=>h[i]=h[i]+v|0);
+ }
+ return h.map(x=>(x>>>0).toString(16).padStart(8,'0')).join('');
+}
+const H=async s=>sha('mk:'+s);
+/* ONLINE SYNC: paste your Firebase Realtime Database URL between the quotes, e.g. https://myschool-default-rtdb.firebaseio.com
+   Leave empty to keep data on each phone only. */
+const FB_URL='';
+const FBU=()=>FB_URL.replace(/\/$/,'')+'/mk.json';
+const norm=j=>{j.students=j.students||[];j.students.forEach(s=>{s.m=s.m||{};s.k=s.k||''});if(Array.isArray(j.ca)){const o={};j.ca.forEach((v,i)=>{if(v)o[i]=v});j.ca=o}return j};
+const cache=()=>{try{localStorage.setItem('mk_data3',JSON.stringify(D))}catch(e){}};
+let pt=0;
+async function push(){if(!FB_URL)return;try{const r=await fetch(FBU(),{method:'PUT',body:JSON.stringify(D)});if(!r.ok)throw 0}catch(e){toast('Could not reach the online database. Changes are saved on this phone only.')}}
+async function sync(){if(!FB_URL)return;try{const r=await fetch(FBU());if(!r.ok)throw 0;const j=await r.json();if(j){D=norm(j);cache()}else if(D)await push()}catch(e){}}
+const NAME='നൂറുൽ ഹുദാ മദ്റസ',EN='Nurul Huda Madrasa',MAX=100,PASS=35,DPW='1234';
+const DEF=['Quran','Aqeedah','Fiqh','Akhlaq','Arabic','Tareekh'];
+const CS={2:['Quran','Fiqh','Akhlaq','Arabic','Malayalam'],3:['Quran','Aqeedah','Fiqh','Tareekh','Arabic','English'],4:['Quran','Fiqh','Aqeedah','Hadith']};
+const sub=c=>CS[c]||DEF;
+let D=null,S=null,tab='m',cls=1,lm='s',lc=1;
+const save=()=>{cache();if(FB_URL){clearTimeout(pt);pt=setTimeout(push,300)}};
+const toast=t=>{const e=$('#toast');e.textContent=t;e.style.opacity=1;setTimeout(()=>e.style.opacity=0,3200)};
+const tot=s=>sub(s.c).reduce((a,j)=>a+(+s.m[j]||0),0);
+const passed=s=>sub(s.c).every(j=>(+s.m[j]||0)>=PASS);
+const can=c=>S&&(S.r==='a'||(S.r==='t'&&S.c==c));
+const taken=(u,c)=>D.students.some(s=>s.c==c&&s.u===u);
+function stats(c){const L=D.students.filter(s=>s.c==c).map(s=>({s,t:tot(s)})).sort((a,b)=>b.t-a.t);L.forEach((x,i)=>x.rank=i&&x.t==L[i-1].t?L[i-1].rank:i+1);return L}
+async function seed(){
+  const h=await H(DPW),students=[];let id=1;
+  for(let c=1;c<=4;c++)for(let r=1;r<=3;r++){const m={};sub(c).forEach((j,i)=>m[j]=30+((id*37+i*17)%66));students.push({id,n:'Demo Student '+id,r,c,u:'c'+c+'s'+r,h,m,k:''});id++}
+  const ca={};for(let c=1;c<=12;c++)ca[c]={n:'Teacher '+c,u:'class'+c,h:await H('class'+c+'@123')};
+  return{admin:{u:'admin',h:await H('admin@123')},nid:id,students,ca};
+}
+const hdr=x=>`<header><div class="logo">📖</div><h1>${EN}<small>${NAME} · Mark List Portal</small></h1>${x||''}</header>`;
+const KIDS=`<svg viewBox="0 0 240 200"><rect width="240" height="200" fill="#1a0508"/><circle cx="120" cy="70" r="90" fill="#3d0810"/>
+<rect x="28" y="124" width="76" height="90" rx="30" fill="#f1f1f1"/><circle cx="66" cy="90" r="25" fill="#e2a97e"/><path d="M41 84q25-38 50 0z" fill="#fff"/><rect x="41" y="80" width="50" height="6" fill="#c1121f"/><circle cx="58" cy="95" r="2.6" fill="#222"/><circle cx="74" cy="95" r="2.6" fill="#222"/><path d="M58 104q8 6 16 0" stroke="#7a3b22" stroke-width="2.2" fill="none"/>
+<rect x="136" y="126" width="76" height="90" rx="30" fill="#3a3a42"/><ellipse cx="174" cy="92" rx="31" ry="33" fill="#c1121f"/><circle cx="174" cy="95" r="22" fill="#edb88f"/><circle cx="166" cy="96" r="2.6" fill="#222"/><circle cx="182" cy="96" r="2.6" fill="#222"/><path d="M166 105q8 6 16 0" stroke="#7a3b22" stroke-width="2.2" fill="none"/>
+<path d="M96 146L88 162" stroke="#f1f1f1" stroke-width="13" stroke-linecap="round"/><path d="M144 148L152 162" stroke="#3a3a42" stroke-width="13" stroke-linecap="round"/>
+<path d="M80 140L120 148L160 140L160 184L120 192L80 184Z" fill="#8f0f1b"/><path d="M86 144L120 151V186L86 179Z" fill="#fffaf0"/><path d="M154 144L120 151V186L154 179Z" fill="#f0e9d8"/>
+<g stroke="#b9b09a" stroke-width="1.6"><path d="M92 156L114 160M92 163L114 167M92 170L114 174M148 156L126 160M148 163L126 167M148 170L126 174"/></g>
+<circle cx="88" cy="163" r="7" fill="#e2a97e"/><circle cx="152" cy="163" r="7" fill="#edb88f"/></svg>`;
+function intro(){
+  const el=document.createElement('div');el.id='intro';
+  el.innerHTML=`<div><div class="pic">${KIDS}</div><div class="en">${[...EN].map((ch,i)=>`<span style="animation-delay:${.3+i*.06}s">${ch==' '?'&nbsp;':ch}</span>`).join('')}</div><div class="ln"></div><div class="ml">${NAME}</div><div class="sub">Mark List Portal</div></div>`;
+  const go=()=>{el.classList.add('hide');setTimeout(()=>el.remove(),1000)};
+  el.onclick=go;document.body.appendChild(el);setTimeout(go,4500);
+}
+const ROLES={s:'Student',t:'Teacher',a:'Admin'};
+const hint=()=>'Demo login: '+(lm==='a'?'admin / admin@123':lm==='t'?`class${lc} / class${lc}@123`:lc<=4?`c${lc}s1 / 1234`:'no demo students in this class');
+function loginView(){
+  const R=ROLES[lm];
+  app.innerHTML=`${hdr()}<main><div class="card login"><div class="logo">${lm==='a'?'🛡️':lm==='t'?'👨‍🏫':'🎓'}</div><h2 style="margin:0 0 12px">${R} login</h2>
+  <div class="bar" style="justify-content:center">${Object.keys(ROLES).map(k=>`<button class="tab ${lm==k?'on':''}" onclick="lm='${k}';render()">${ROLES[k]}</button>`).join('')}</div>
+  ${lm==='a'?'':`<select id="lc" aria-label="Select class" onchange="lc=+this.value;$('#hint').textContent=hint()">${Array.from({length:12},(_,i)=>`<option value="${i+1}"${lc==i+1?' selected':''}>Class ${i+1}</option>`).join('')}</select>`}
+  <input id="u" placeholder="${R} username" autocomplete="username" autocapitalize="none">
+  <div class="pw"><input id="p" type="password" placeholder="Password" autocomplete="current-password"><button type="button" class="eye" id="eye" aria-label="Show password" onclick="eye()">Show</button></div>
+  <p class="mut" id="hint" style="margin:6px 0 0">${hint()}</p>
+  <div class="err" id="err" role="alert"></div><button class="b w" id="go">Sign in as ${R.toLowerCase()}</button>
+  <p class="mut" style="margin:14px 0 6px">${FB_URL?'Online sync is on. All phones share the same data.':'Online sync is off. Data stays on this phone only.'}</p>
+  <button class="b g s" onclick="resetAll()">Reset saved data on this phone</button></div></main>`;
+  $('#go').onclick=login;$('#p').onkeydown=e=>{if(e.key==='Enter')login()};
+}
+function eye(){const p=$('#p'),sh=p.type==='password';p.type=sh?'text':'password';$('#eye').textContent=sh?'Hide':'Show';$('#eye').setAttribute('aria-label',sh?'Hide password':'Show password')}
+async function login(){
+  $('#err').textContent='';await sync();
+  const u=$('#u').value.trim().toLowerCase(),h=await H($('#p').value.trim());let n=null;
+  if(lm==='a'){if(u===D.admin.u&&h===D.admin.h)n={r:'a'}}
+  else if(lm==='t'){const t=D.ca[lc];if(t&&t.u===u&&t.h===h)n={r:'t',c:lc}}
+  else{const s=D.students.find(s=>s.c==lc&&s.u===u&&s.h===h);if(s)n={r:'s',id:s.id}}
+  if(!n){$('#err').textContent='Wrong username or password for '+ROLES[lm].toLowerCase()+' login'+(lm==='a'?'':' in Class '+lc)+'. Check the class, username and password.';return}
+  S=n;try{sessionStorage.setItem('mk_s2',JSON.stringify(S))}catch(e){}
+  cls=S.c||1;tab='m';render();
+}
+function resetAll(){if(!confirm('This clears the copy saved on this phone and reloads it'+(FB_URL?' from the online database':' with demo data')+'. Continue?'))return;try{localStorage.removeItem('mk_data3');sessionStorage.removeItem('mk_s2')}catch(e){}location.reload()}
+function logout(){S=null;try{sessionStorage.removeItem('mk_s2')}catch(e){}render()}
+const out=`${FB_URL?'<button class="b g s noprint" onclick="sync().then(render)">Refresh</button>':''}<button class="b s noprint" onclick="window.print()">Print</button><button class="b g s" onclick="logout()">Sign out</button>`;
+function studentView(){
+  const s=D.students.find(x=>x.id==S.id);if(!s){logout();return}
+  const L=stats(s.c),me=L.find(x=>x.s.id==s.id),sj=sub(s.c),t=tot(s),ok=passed(s);
+  app.innerHTML=`${hdr(out)}<main>
+  <div class="card"><div class="hero"><div><h2>${esc(s.n)}</h2><p>Class ${s.c} · Roll ${s.r} · Class teacher: ${esc(D.ca[s.c].n)}</p></div><div class="${ok?'ok':'no'}" style="font-size:20px">${ok?'PASSED':'FAILED'}</div></div>
+  <div class="stats"><div class="st"><b>${t}</b><span>Total / ${sj.length*MAX}</span></div><div class="st"><b>${(t/sj.length).toFixed(1)}%</b><span>Percentage</span></div><div class="st"><b>${me.rank}</b><span>Rank of ${L.length}</span></div></div></div>
+  <div class="card wrap"><table><thead><tr><th>Subject</th><th>Marks</th><th>Result</th></tr></thead><tbody>
+  ${sj.map(j=>{const v=+s.m[j]||0;return`<tr><td>${j}</td><td class="${v<PASS?'low':''}">${v} / ${MAX}</td><td class="${v>=PASS?'ok':'no'}">${v>=PASS?'Pass':'Fail'}</td></tr>`}).join('')}
+  </tbody><tfoot><tr><td>Total</td><td>${t} / ${sj.length*MAX}</td><td></td></tr></tfoot></table>
+  ${s.k?`<p class="mut">Teacher remark: ${esc(s.k)}</p>`:''}</div></main>`;
+}
+function staffView(){
+  const admin=S.r==='a';if(!admin)cls=S.c;
+  if(!admin&&tab==='t')tab='m';
+  const L=stats(cls),sj=sub(cls),pc=L.filter(x=>passed(x.s)).length,byRoll=[...L].sort((a,b)=>a.s.r-b.s.r);
+  const chips=admin&&tab!=='t'?`<div class="bar noprint" role="group" aria-label="Select class">${Array.from({length:12},(_,i)=>`<button class="tab ${cls==i+1?'on':''}" onclick="cls=${i+1};render()">Class ${i+1}</button>`).join('')}</div>`:'';
+  let body;
+  if(tab==='m')body=`<div class="card wrap"><table><thead><tr><th>Roll</th><th>Name</th>${sj.map(j=>`<th>${j}</th>`).join('')}<th>Total</th><th>Rank</th><th>Result</th><th>Remark</th></tr></thead><tbody>
+  ${byRoll.map(x=>`<tr><td>${x.s.r}</td><td>${esc(x.s.n)}</td>${sj.map(j=>`<td><input type="number" min="0" max="${MAX}" value="${x.s.m[j]??''}" aria-label="${esc(x.s.n)} ${j}" onchange="setM(${x.s.id},'${j}',this.value)"></td>`).join('')}<td>${x.t}</td><td>${x.rank}</td><td class="${passed(x.s)?'ok':'no'}">${passed(x.s)?'Pass':'Fail'}</td><td><input class="k" value="${esc(x.s.k||'')}" aria-label="Remark" onchange="setK(${x.s.id},this.value)"></td></tr>`).join('')||`<tr><td colspan="${sj.length+6}" class="mut">No students in Class ${cls} yet. Add them in the Students tab.</td></tr>`}
+  </tbody></table></div>`;
+  else if(tab==='s')body=`<div class="card"><h3 style="margin-top:0">Add student to Class ${cls}</h3><div class="row"><input id="an" placeholder="Student name"><input id="au" placeholder="Username" autocapitalize="none"></div><p class="mut">Starting password is ${DPW}.</p><button class="b" onclick="addS()">Add student</button></div>
+  <div class="card wrap"><table><thead><tr><th>Roll</th><th>Name</th><th>Username</th><th></th></tr></thead><tbody>${byRoll.map(x=>`<tr><td>${x.s.r}</td><td>${esc(x.s.n)}</td><td>${esc(x.s.u)}</td><td><button class="b g s" onclick="delS(${x.s.id})">Delete</button></td></tr>`).join('')||'<tr><td colspan="4" class="mut">No students yet.</td></tr>'}</tbody></table></div>`;
+  else body=`<div class="card wrap"><table><thead><tr><th>Class</th><th>Teacher name</th><th>Username</th><th>New password</th><th></th></tr></thead><tbody>${Array.from({length:12},(_,i)=>{const c=i+1,t=D.ca[c];return`<tr><td>${c}</td><td><input class="k" id="tn${c}" value="${esc(t.n)}"></td><td><input class="k" id="tu${c}" value="${esc(t.u)}" autocapitalize="none"></td><td><input class="k" id="tp${c}" placeholder="Keep current"></td><td><button class="b s" onclick="saveT(${c})">Save</button></td></tr>`}).join('')}</tbody></table></div>`;
+  const tabs=[['m','Marks'],['s','Students']].concat(admin?[['t','Teachers']]:[]);
+  app.innerHTML=`${hdr(out)}<main>
+  <div class="card"><div class="hero"><div><h2>${admin?'Admin':esc(D.ca[cls].n)}</h2><p>${admin?'All classes':'Class teacher · Class '+cls}${tab!=='t'?` · Class ${cls} teacher: ${esc(D.ca[cls].n)}`:''}</p></div></div>
+  ${tab==='t'?'':`<div class="stats"><div class="st"><b>${L.length}</b><span>Students</span></div><div class="st"><b>${pc}</b><span>Passed</span></div><div class="st"><b>${L.length-pc}</b><span>Failed</span></div><div class="st"><b>${L.length?Math.round(pc/L.length*100):0}%</b><span>Pass rate</span></div></div>`}</div>
+  <div class="bar noprint">${tabs.map(([k,l])=>`<button class="tab ${tab==k?'on':''}" onclick="tab='${k}';render()">${l}</button>`).join('')}</div>${chips}${body}</main>`;
+}
+async function setM(id,j,v){await sync();const s=D.students.find(x=>x.id==id);if(!s||!can(s.c))return;if(v==='')delete s.m[j];else s.m[j]=Math.max(0,Math.min(MAX,+v||0));save();render();toast('Saved')}
+async function setK(id,v){await sync();const s=D.students.find(x=>x.id==id);if(!s||!can(s.c))return;s.k=v.trim();save();toast('Saved')}
+async function addS(){
+  if(!can(cls))return toast('You can only add students to your own class');
+  await sync();
+  const n=$('#an').value.trim(),u=$('#au').value.trim().toLowerCase();
+  if(!n||!u)return toast('Enter the student name and username');
+  if(taken(u,cls))return toast('That username is already used in Class '+cls+'. Choose another.');
+  const r=Math.max(0,...D.students.filter(s=>s.c==cls).map(s=>s.r))+1;
+  D.students.push({id:D.nid++,n,r,c:cls,u,h:await H(DPW),m:{},k:''});save();render();toast('Student added');
+}
+async function delS(id){const s=D.students.find(x=>x.id==id);if(!can(s.c))return;if(!confirm('Delete '+s.n+'?'))return;await sync();D.students=D.students.filter(x=>x.id!=id);save();render();toast('Student deleted')}
+async function saveT(c){
+  if(S.r!=='a')return;
+  const n=$('#tn'+c).value.trim(),u=$('#tu'+c).value.trim().toLowerCase(),p=$('#tp'+c).value;
+  if(!n||!u)return toast('Enter the teacher name and username');
+  await sync();
+  D.ca[c].n=n;D.ca[c].u=u;if(p)D.ca[c].h=await H(p);save();render();toast('Class '+c+' teacher saved');
+}
+function render(){!S?loginView():S.r==='s'?studentView():staffView()}
+(async()=>{
+  try{D=JSON.parse(localStorage.getItem('mk_data3')||'null')}catch(e){}
+  await sync();
+  if(!D){D=await seed();save()}
+  try{S=JSON.parse(sessionStorage.getItem('mk_s2')||'null')}catch(e){}
+  if(S&&S.c)cls=S.c;
+  render();intro();
+})();
+</script>
+</body>
+</html>
